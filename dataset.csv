@@ -1,0 +1,5 @@
+latencia,jitter,packet_loss,throughput,classe
+80.83,0.222,0.0,1.35,moderado
+80.784,0.142,0.0,1.98,moderado
+80.777,0.173,0.0,1.56,moderado
+80.595,0.18,10.0,1.98,moderado
