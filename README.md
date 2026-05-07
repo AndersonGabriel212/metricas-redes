@@ -1,0 +1,160 @@
+Primeira Versão do Ambiente Experimental com Coleta
+
+Inicial de Métricas
+
+Este documento apresenta todas as etapas funcionais realizadas para criação do ambiente experimental
+utilizando Mininet, simulação de rede, coleta de métricas de QoS e preparação do dataset para o projeto de
+predição de eventos de lag utilizando Machine Learning.
+
+1. Instalação dos Requisitos
+sudo apt update
+sudo apt install -y mininet iperf3 python3-pip net-tools iproute2
+sudo apt install -y python3-venv python3-full
+
+2. Criação do Ambiente Virtual Python
+python3 -m venv venv
+source venv/bin/activate
+pip install pandas scikit-learn matplotlib numpy
+
+3. Limpeza do Mininet
+sudo mn -c
+
+4. Código Funcional do Ambiente Experimental
+
+from mininet.net import Mininet
+from mininet.link import TCLink
+from mininet.cli import CLI
+from mininet.log import setLogLevel
+def topology():
+net = Mininet(link=TCLink)
+h1 = net.addHost('h1', ip='10.0.0.1/24')
+h2 = net.addHost('h2', ip='10.0.0.2/24')
+s1 = net.addSwitch('s1', failMode='standalone')
+net.addLink(h1, s1, bw=10, delay='20ms', loss=1)
+net.addLink(h2, s1, bw=10, delay='20ms', loss=1)
+net.start()
+net.pingAll()
+CLI(net)
+net.stop()
+if __name__ == '__main__':
+setLogLevel('info')
+topology()5. Execução do Ambiente
+sudo python3 experimento.py
+
+5. Resultado Esperado da Conectividade
+
+*** Ping: testing ping reachability
+h1 -> h2
+h2 -> h1
+*** Results: 0% dropped
+
+6. Teste de Latência, Jitter e Perda de Pacotes
+
+mininet> h1 ping 10.0.0.2 -c 10
+
+7. Interpretação das Métricas
+Latência:
+Valor médio (avg) do ping.
+Jitter:
+Valor mdev do ping.
+Perda de Pacotes:
+Percentual packet loss.
+
+8. Teste de Throughput com iPerf3
+Dentro do Mininet:
+Servidor:
+mininet> h2 iperf3 -s &
+Cliente:
+mininet> h1 iperf3 -c 10.0.0.2
+
+9. Simulação de Cenários de Rede
+Cenário Normal:
+delay='10ms'
+loss=0
+Cenário Moderado:
+delay='80ms'
+loss=2
+Cenário Severo:
+delay='200ms'
+loss=10
+
+10. Simulação de Jitter Realista
+delay='80ms 20ms distribution normal'12. Código de Coleta Automática de Métricas
+import subprocess
+import csv
+import re
+import time
+arquivo = open("dataset.csv", "w", newline='')
+writer = csv.writer(arquivo)
+writer.writerow([
+"latencia",
+"jitter",
+"packet_loss",
+"throughput",
+"classe"
+])
+for i in range(20):
+print(f"Coleta {i}")
+ping = subprocess.check_output(
+"ping -c 10 10.0.0.2",
+shell=True
+).decode()
+rtt = re.search(
+r'=(.*?)/(.*?)/(.*?)/(.*?) ms',
+ping
+)
+latencia = float(rtt.group(2))
+jitter = float(rtt.group(4))
+loss = re.search(
+r'(\d+)% packet loss',
+ping
+)
+perda = float(loss.group(1))
+iperf = subprocess.check_output(
+"iperf3 -c 10.0.0.2",
+shell=True
+).decode()
+banda = re.findall(
+r'(\d+\.\d+) Mbits/sec',
+iperf
+)
+throughput = float(banda[-1])
+if latencia < 50:
+classe = "normal"
+elif latencia < 120:
+classe = "moderado"
+else:
+classe = "severo"
+writer.writerow([
+latencia,
+jitter,
+perda,
+throughput,
+classe
+])
+time.sleep(2)
+arquivo.close()
+print("Dataset criado")13. Execução da Coleta de Métricas
+Dentro do Mininet:
+Servidor:
+mininet> h2 iperf3 -s &
+Coleta:
+mininet> h1 python3 coleta_metricas.py
+
+12. Resultado Esperado
+Será gerado:
+dataset.csv
+Exemplo:
+latencia,jitter,packet_loss,throughput,classe
+20,1.2,0,9.7,normal
+85,8.1,2,8.4,moderado
+205,30,11,2.1,severo
+
+
+13. Objetivos Já Concluídos
+- Ambiente experimental funcionando
+- Simulação de rede no Mininet
+- Coleta de métricas de QoS
+- Simulação de latência e perda
+- Geração inicial de dataset
+- Preparação para treinamento de Machine Learning
