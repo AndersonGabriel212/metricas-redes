@@ -9,9 +9,9 @@ predição de eventos de lag utilizando Machine Learning.
 
 1. Instalação dos Requisitos
 
-sudo apt update <br>
-sudo apt install -y mininet iperf3 python3-pip net-tools iproute2
-sudo apt install -y python3-venv python3-full
+sudo apt update  <br>
+sudo apt install -y mininet iperf3 python3-pip net-tools iproute2  <br>
+sudo apt install -y python3-venv python3-full  <br>
 
 3. Criação do Ambiente Virtual Python
 
