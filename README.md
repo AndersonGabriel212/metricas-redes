@@ -71,7 +71,9 @@ Dentro do Mininet:
 **Servidor:**
 mininet> h2 iperf3 -s &  <br>
 **Cliente:**
-mininet> h1 iperf3 -c 10.0.0.2
+mininet> h1 iperf3 -c 10.0.0.2  <br>
+
+mininet> h1 python3 coleta_metricas.py  <br>
 
 **9. Simulação de Cenários de Rede**
 **Cenário Normal:**
