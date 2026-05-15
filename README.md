@@ -1,4 +1,5 @@
 Primeira Versão do Ambiente Experimental com Coleta
+Dupla: Anderson Gabriel e João Coelho
 
 Inicial de Métricas
 
@@ -7,21 +8,24 @@ utilizando Mininet, simulação de rede, coleta de métricas de QoS e preparaç�
 predição de eventos de lag utilizando Machine Learning.
 
 1. Instalação dos Requisitos
+
 sudo apt update
 sudo apt install -y mininet iperf3 python3-pip net-tools iproute2
 sudo apt install -y python3-venv python3-full
 
-2. Criação do Ambiente Virtual Python
+3. Criação do Ambiente Virtual Python
+
 python3 -m venv venv
 source venv/bin/activate
 pip install pandas scikit-learn matplotlib numpy
 
-3. Limpeza do Mininet
+5. Limpeza do Mininet
+
 sudo mn -c
 
-4. Código Funcional do Ambiente Experimental
+7. Código Funcional do Ambiente Experimental
 
-from mininet.net import Mininet
+from mininet.net import Mininet \n
 from mininet.link import TCLink
 from mininet.cli import CLI
 from mininet.log import setLogLevel
