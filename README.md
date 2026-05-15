@@ -148,7 +148,7 @@ mininet> h2 iperf3 -s &
 Coleta:
 mininet> h1 python3 coleta_metricas.py
 
-**12. Resultado Esperado**
+**11. Resultado Esperado**
 
 **Será gerado:**
 dataset.csv  <br>
@@ -159,7 +159,7 @@ latencia,jitter,packet_loss,throughput,classe  <br>
 205,30,11,2.1,severo  <br>
 
 
-13. Objetivos Já Concluídos
+12. Objetivos Já Concluídos
 - Ambiente experimental funcionando
 - Simulação de rede no Mininet
 - Coleta de métricas de QoS
