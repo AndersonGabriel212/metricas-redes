@@ -1,88 +1,91 @@
 Primeira Versão do Ambiente Experimental com Coleta
 Dupla: Anderson Gabriel e João Coelho
 
-Inicial de Métricas
+**Inicial de Métricas**
 
 Este documento apresenta todas as etapas funcionais realizadas para criação do ambiente experimental
 utilizando Mininet, simulação de rede, coleta de métricas de QoS e preparação do dataset para o projeto de
 predição de eventos de lag utilizando Machine Learning.
 
-1. Instalação dos Requisitos
+**1. Instalação dos Requisitos**
 
 sudo apt update  <br>
 sudo apt install -y mininet iperf3 python3-pip net-tools iproute2  <br>
 sudo apt install -y python3-venv python3-full  <br>
 
-3. Criação do Ambiente Virtual Python
+**2. Criação do Ambiente Virtual Python**
 
-python3 -m venv venv
-source venv/bin/activate
-pip install pandas scikit-learn matplotlib numpy
+python3 -m venv venv  <br>
+source venv/bin/activate  <br>
+pip install pandas scikit-learn matplotlib numpy  <br>
 
-5. Limpeza do Mininet
+**3. Limpeza do Mininet**
 
 sudo mn -c
 
-7. Código Funcional do Ambiente Experimental
+**4. Código Funcional do Ambiente Experimental**
 
-from mininet.net import Mininet \n
-from mininet.link import TCLink
-from mininet.cli import CLI
-from mininet.log import setLogLevel
-def topology():
-net = Mininet(link=TCLink)
-h1 = net.addHost('h1', ip='10.0.0.1/24')
-h2 = net.addHost('h2', ip='10.0.0.2/24')
-s1 = net.addSwitch('s1', failMode='standalone')
-net.addLink(h1, s1, bw=10, delay='20ms', loss=1)
-net.addLink(h2, s1, bw=10, delay='20ms', loss=1)
-net.start()
-net.pingAll()
-CLI(net)
-net.stop()
-if __name__ == '__main__':
-setLogLevel('info')
-topology()5. Execução do Ambiente
-sudo python3 experimento.py
+from mininet.net import Mininet  <br>
+from mininet.link import TCLink  <br>
+from mininet.cli import CLI  <br>
+from mininet.log import setLogLevel  <br>
 
-5. Resultado Esperado da Conectividade
 
-*** Ping: testing ping reachability
-h1 -> h2
-h2 -> h1
-*** Results: 0% dropped
+def topology():  <br>
+net = Mininet(link=TCLink)  <br>
+h1 = net.addHost('h1', ip='10.0.0.1/24')  <br>
+h2 = net.addHost('h2', ip='10.0.0.2/24')  <br>
+s1 = net.addSwitch('s1', failMode='standalone')  <br>
+net.addLink(h1, s1, bw=10, delay='20ms', loss=1)  <br>
+net.addLink(h2, s1, bw=10, delay='20ms', loss=1)  <br>
+net.start()  <br>
+net.pingAll()  <br>
+CLI(net)  <br>
+net.stop()  <br>
 
-6. Teste de Latência, Jitter e Perda de Pacotes
+if __name__ == '__main__':  <br>
+setLogLevel('info')  <br>
+topology()5. Execução do Ambiente  <br>
+sudo python3 experimento.py  <br>
+
+**5. Resultado Esperado da Conectividade**
+
+*** Ping: testing ping reachability  <br>
+h1 -> h2  <br>
+h2 -> h1  <br>
+*** Results: 0% dropped  <br>
+
+**6. Teste de Latência, Jitter e Perda de Pacotes**
 
 mininet> h1 ping 10.0.0.2 -c 10
 
-7. Interpretação das Métricas
-Latência:
-Valor médio (avg) do ping.
-Jitter:
-Valor mdev do ping.
-Perda de Pacotes:
-Percentual packet loss.
+**7. Interpretação das Métricas**
 
-8. Teste de Throughput com iPerf3
+Latência: Valor médio (avg) do ping.  <br>
+Jitter: Valor mdev do ping.  <br>
+Perda de Pacotes: Percentual packet loss.  <br>
+
+**8. Teste de Throughput com iPerf3**
 Dentro do Mininet:
-Servidor:
-mininet> h2 iperf3 -s &
-Cliente:
+
+**Servidor:**
+mininet> h2 iperf3 -s &  <br>
+**Cliente:**
 mininet> h1 iperf3 -c 10.0.0.2
 
-9. Simulação de Cenários de Rede
-Cenário Normal:
-delay='10ms'
-loss=0
-Cenário Moderado:
-delay='80ms'
-loss=2
-Cenário Severo:
-delay='200ms'
-loss=10
+**9. Simulação de Cenários de Rede**
+**Cenário Normal:**
+delay='10ms'  <br>
+loss=0  <br>
+**Cenário Moderado:**
+delay='80ms'  <br>
+loss=2  <br>
+**Cenário Severo:**
+delay='200ms'  <br>
+loss=10  <br>
 
-10. Simulação de Jitter Realista
+**10. Simulação de Jitter Realista**
+
 delay='80ms 20ms distribution normal'12. Código de Coleta Automática de Métricas
 import subprocess
 import csv
@@ -145,14 +148,15 @@ mininet> h2 iperf3 -s &
 Coleta:
 mininet> h1 python3 coleta_metricas.py
 
-12. Resultado Esperado
-Será gerado:
-dataset.csv
-Exemplo:
-latencia,jitter,packet_loss,throughput,classe
-20,1.2,0,9.7,normal
-85,8.1,2,8.4,moderado
-205,30,11,2.1,severo
+**12. Resultado Esperado**
+
+**Será gerado:**
+dataset.csv  <br>
+Exemplo:  <br>
+latencia,jitter,packet_loss,throughput,classe  <br>
+20,1.2,0,9.7,normal  <br>
+85,8.1,2,8.4,moderado  <br>
+205,30,11,2.1,severo  <br>
 
 
 13. Objetivos Já Concluídos
